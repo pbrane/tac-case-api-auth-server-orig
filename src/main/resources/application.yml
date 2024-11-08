@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: tac-case-auth-server
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mydatabase
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME:myuser}
+    password: ${DB_PASSWORD:mypassword}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
