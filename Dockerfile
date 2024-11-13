@@ -25,7 +25,7 @@ RUN mvn dependency:go-offline
 COPY src src
 
 # Build the application
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests -P container-build
 
 # Use a minimal runtime image for the final stage
 FROM eclipse-temurin:21-jdk-noble
