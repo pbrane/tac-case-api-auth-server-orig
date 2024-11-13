@@ -1,0 +1,15 @@
+services:
+  authorization-server:
+    container_name: tac-case-api-server-prod
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://192.168.1.153:5432/taccaseapi
+      SPRING_DATASOURCE_USERNAME: tacapiuser
+      SPRING_DATASOURCE_PASSWORD: tacapipass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8081:8080"

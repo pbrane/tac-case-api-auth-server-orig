@@ -2,16 +2,26 @@ spring:
   application:
     name: tac-case-auth-server
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/mydatabase}
     driver-class-name: org.postgresql.Driver
-    username: ${DB_USERNAME:myuser}
-    password: ${DB_PASSWORD:mypassword}
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/taccaseapi}
+    username: ${SPRING_DATASOURCE_USERNAME:tacapiuser}
+    password: ${SPRING_DATASOURCE_PASSWORD:tacapipass}
   shell:
     interactive:
       enabled: true
+
+#  security:
+#    oauth2:
+#      authorizationserver:
+#        endpoint:
+#          authorization-uri: /oauth2/authorize
+#          device-authorization-uri: /oauth2/device_authorization
+#          device-verification-uri: /oauth2/device_verification
+#          jwk-set-uri: /oauth2/jwks
+#          oidc:
+#            client-registration-uri: /connect/register
+#            logout-uri: /connect/logout
+#            user-info-uri: /userinfo
+#          token-introspection-uri: /oauth2/introspect
+#          token-revocation-uri: /oauth2/revoke
+#          token-uri: /oauth2/token

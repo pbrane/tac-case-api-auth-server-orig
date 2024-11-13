@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 @Configuration
 public class AuthorizationServerConfig {
 
-    @Value("${auth.server.issuer-uri:http://localhost:9000}")
+    @Value("${AUTH_SERVER_ISSUER:http://localhost:8080}")
     private String issuerUri;
 
     @Bean

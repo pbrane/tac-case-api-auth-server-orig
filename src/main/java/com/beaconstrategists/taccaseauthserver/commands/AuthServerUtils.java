@@ -25,7 +25,10 @@ public class AuthServerUtils {
     private final PasswordEncoder passwordEncoder;
     private final JdbcTemplate jdbcTemplate;
 
-    public AuthServerUtils(RegisteredClientRepository registeredClientRepository, PasswordEncoder passwordEncoder, JdbcTemplate jdbcTemplate) {
+    public AuthServerUtils(RegisteredClientRepository registeredClientRepository,
+                           PasswordEncoder passwordEncoder,
+                           JdbcTemplate jdbcTemplate) {
+
         this.registeredClientRepository = registeredClientRepository;
         this.passwordEncoder = passwordEncoder;
         this.jdbcTemplate = jdbcTemplate;
@@ -33,7 +36,21 @@ public class AuthServerUtils {
 
     @ShellMethod(value = "List all registered clients sorted by secret expiration date.", key = "list-clients")
     public String listClients() {
-        String query = "SELECT id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, post_logout_redirect_uris, scopes, client_settings, token_settings FROM oauth2_registered_client";
+        String query = "SELECT " +
+                            "id, " +
+                            "client_id, " +
+                            "client_id_issued_at, " +
+                            "client_secret, " +
+                            "client_secret_expires_at, " +
+                            "client_name, " +
+                            "client_authentication_methods, " +
+                            "authorization_grant_types, " +
+                            "redirect_uris, " +
+                            "post_logout_redirect_uris, " +
+                            "scopes, client_settings, " +
+                            "token_settings " +
+                        "FROM oauth2_registered_client";
+
         List<RegisteredClient> clients = jdbcTemplate.query(query, new JdbcRegisteredClientRepository.RegisteredClientRowMapper());
 
         List<RegisteredClient> sortedClients = clients.stream()
@@ -59,9 +76,9 @@ public class AuthServerUtils {
 
 
     @ShellMethod(key = "registerOrUpdateClient", value = "Register new client or update existing")
-    public String registerOrUpdateClient(@ShellOption(value = "-i", defaultValue = "client-app") String clientId,
-                                         @ShellOption(value = "-s", defaultValue = "secret") String clientSecret,
-                                         @ShellOption(value = "-n", defaultValue = "client-app") String clientName) {
+    public String registerOrUpdateClient(@ShellOption(value = "-i", defaultValue = "client-id", help = "Client ID") String clientId,
+                                         @ShellOption(value = "-s", defaultValue = "client-secret", help = "Client Secret") String clientSecret,
+                                         @ShellOption(value = "-n", defaultValue = "msft", help = "Client Name") String clientName) {
 
         RegisteredClient client = registerOrUpdate(clientId, clientSecret, clientName, registeredClientRepository, passwordEncoder);
         return String.format("Client: %s, registered. Expires: %s", client.getClientName(), client.getClientSecretExpiresAt());
