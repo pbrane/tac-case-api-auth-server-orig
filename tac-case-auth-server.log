@@ -1,0 +1,7 @@
+1731512092551:list-clients
+1731512098907:registerOrUpdateClient --help
+1731512116985:registerOrUpdateClient -i david -s hustace -n pbrane
+1731512120079:list-clients
+1731512378353:exit
+1731512869180:quite
+1731512870831:quit

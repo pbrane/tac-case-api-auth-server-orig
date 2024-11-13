@@ -1,3 +1,10 @@
+logging:
+  level:
+    org:
+      springdoc:
+        api:
+          OpenApiResource: info
+    web: info
 spring:
   application:
     name: tac-case-auth-server

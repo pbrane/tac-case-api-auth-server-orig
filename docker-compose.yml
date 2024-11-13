@@ -5,12 +5,12 @@ services:
     container_name: postgres-prod
     image: postgres:17
     environment:
-      POSTGRES_USER: tacapiuser
-      POSTGRES_PASSWORD: tacapipass
+      POSTGRES_USER: tacauthuser
+      POSTGRES_PASSWORD: tacauthpass
       PGDATA: /authdb/data/postgres
-      POSTGRES_DB: taccaseapi
+      POSTGRES_DB: taccaseauth
     volumes:
-      - authdb_data:/var/docker/taccaseapi
+      - authdb_data:/var/docker/taccaseauth
       - ./db_init:/docker-entrypoint-initdb.d
     ports:
       - "6432:5432"
@@ -29,12 +29,12 @@ services:
     container_name: postgres-dev
     image: postgres:17
     environment:
-      POSTGRES_USER: tacapiuser
-      POSTGRES_PASSWORD: tacapipass
+      POSTGRES_USER: tacauthuser
+      POSTGRES_PASSWORD: tacauthpass
       PGDATA: /authdb-dev/data/postgres
-      POSTGRES_DB: taccaseapi
+      POSTGRES_DB: taccaseauth
     volumes:
-      - /dev/null:/var/docker/data/taccaseapi_dev
+      - /dev/null:/var/docker/data/taccaseauth_dev
       - ./db_init:/docker-entrypoint-initdb.d
     ports:
       - "6433:5432"  # Different port for dev to avoid conflicts
@@ -50,7 +50,7 @@ services:
       - development
 
   authorization-server:
-    container_name: tac-case-api-server-prod
+    container_name: tac-case-auth-server-prod
     build:
       context: .
       dockerfile: Dockerfile
@@ -59,12 +59,12 @@ services:
     environment:
       SERVER_PORT: 8080  # Explicitly set the server's listening port
       AUTH_SERVER_ISSUER: http://localhost:8080  # Set the issuer URI to match the port
-      SPRING_DATASOURCE_URL: jdbc:postgresql://authdb:5432/taccaseapi
-      SPRING_DATASOURCE_USERNAME: tacapiuser  # Use $DB_USERNAME for consistency
-      SPRING_DATASOURCE_PASSWORD: tacapipass  # Use $DB_PASSWORD for consistency
+      SPRING_DATASOURCE_URL: jdbc:postgresql://authdb:5432/taccaseauth
+      SPRING_DATASOURCE_USERNAME: tacauthuser  # Use $DB_USERNAME for consistency
+      SPRING_DATASOURCE_PASSWORD: tacauthpass  # Use $DB_PASSWORD for consistency
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
-      - "8081:8080"
+      - "9081:8080"
     depends_on:
       authdb:
         condition: service_healthy
@@ -75,7 +75,7 @@ services:
       - production
 
   authorization-server-dev:
-    container_name: tac-case-api-server-dev
+    container_name: tac-case-auth-server-dev
     build:
       context: .
       dockerfile: Dockerfile
@@ -84,12 +84,12 @@ services:
     environment:
       SERVER_PORT: 8080  # Explicitly set the server's listening port
       AUTH_SERVER_ISSUER: http://localhost:8080  # Set the issuer URI to match the port
-      SPRING_DATASOURCE_URL: jdbc:postgresql://authdb-dev:5432/taccaseapi
-      SPRING_DATASOURCE_USERNAME: tacapiuser
-      SPRING_DATASOURCE_PASSWORD: tacapipass
+      SPRING_DATASOURCE_URL: jdbc:postgresql://authdb-dev:5432/taccaseauth
+      SPRING_DATASOURCE_USERNAME: tacauthuser
+      SPRING_DATASOURCE_PASSWORD: tacauthpass
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
-      - "8082:8080"  # Different port for dev to avoid conflicts
+      - "9082:8080"  # Different port for dev to avoid conflicts
     depends_on:
       authdb-dev:  # Reference the dev database
         condition: service_healthy
