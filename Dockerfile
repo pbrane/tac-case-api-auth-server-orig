@@ -1,16 +1,17 @@
 # Use OpenJDK as the base image for Java 21
-FROM openjdk:21-jdk-slim AS builder
+#FROM openjdk:21-jdk-slim AS builder
+FROM eclipse-temurin:21-jdk-noble AS builder
 
 # Set the JAVA_HOME environment variable to the correct path for OpenJDK
 # The path may vary; you can check it by running: docker run --rm openjdk:21-jdk-slim bash -c 'echo $JAVA_HOME'
-ENV JAVA_HOME=/usr/local/openjdk-21
-ENV PATH="$JAVA_HOME/bin:$PATH"
+#ENV JAVA_HOME=/usr/local/openjdk-21
+#ENV PATH="$JAVA_HOME/bin:$PATH"
 
 # Set the working directory inside the container
 WORKDIR /app
 
 # Install necessary utilities like wget and tar for Maven installation
-RUN apt-get update && apt-get install -y wget tar && rm -rf /var/lib/apt/lists/*
+#RUN apt-get update && apt-get install -y wget tar && rm -rf /var/lib/apt/lists/*
 
 # Download and install Maven separately to ensure mvnw can work
 RUN wget -qO- https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz | tar xz -C /opt \
@@ -19,7 +20,8 @@ RUN wget -qO- https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-m
 # Set Maven environment variables
 ENV MAVEN_HOME=/opt/maven
 ENV PATH="$MAVEN_HOME/bin:$PATH"
-ENV SPRING_DATASOURCE_URL=jdbc:postgresql://192.168.1.153:5432/taccaseapi
+
+#ENV SPRING_DATASOURCE_URL=jdbc:postgresql://192.168.1.153:5432/taccaseapi
 
 # Copy the Maven wrapper and configuration files to the container
 COPY pom.xml mvnw ./
@@ -35,7 +37,8 @@ COPY src src
 RUN mvn clean package -DskipTests
 
 # Use a minimal runtime image for the final stage
-FROM openjdk:21-jdk-slim
+#FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jdk-noble
 
 # Set the working directory for the runtime container
 WORKDIR /app
@@ -44,7 +47,7 @@ WORKDIR /app
 COPY --from=builder /app/target/tac-case-auth-server-*.jar /app/tac-case-auth-server.jar
 
 # Expose the port the application runs on
-EXPOSE 8081
+#EXPOSE 8081
 
 # Define the command to run the application
 ENTRYPOINT ["java", "-jar", "/app/tac-case-auth-server.jar"]

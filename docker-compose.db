@@ -1,28 +1,59 @@
+version: '3.8'
+
 services:
-  db:
-    container_name: postgres
+  authdb:
+    container_name: postgres-prod
     image: postgres:17
     environment:
       POSTGRES_USER: tacapiuser
       POSTGRES_PASSWORD: tacapipass
-#      PGDATA: /data/postgres
+      PGDATA: /authdb/data/postgres
       POSTGRES_DB: taccaseapi
     volumes:
-      - /dev/null:/data/postgres
+      - authdb_data:/var/docker/taccaseapi
       - ./db_init:/docker-entrypoint-initdb.d
     ports:
-      - "5432:5432"
-#    networks:
-#      - db
+      - "6432:5432"
+    networks:
+      - backend
 #    restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d postgres" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-#networks:
-#  db:
-#    driver: bridge
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    profiles:
+      - production
 
-#volumes:
-#  db:
+  authdb-dev:
+    container_name: postgres-dev
+    image: postgres:17
+    environment:
+      POSTGRES_USER: tacapiuser
+      POSTGRES_PASSWORD: tacapipass
+      PGDATA: /authdb-dev/data/postgres
+      POSTGRES_DB: taccaseapi
+    volumes:
+      - /dev/null:/var/docker/data/taccaseapi_dev
+      - ./db_init:/docker-entrypoint-initdb.d
+    ports:
+      - "6433:5432"  # Different port for dev to avoid conflicts
+    networks:
+      - backend
+#    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d postgres" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    profiles:
+      - development
+
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  authdb_data:
+

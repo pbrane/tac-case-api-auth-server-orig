@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_USER: tacapiuser
       POSTGRES_PASSWORD: tacapipass
-      PGDATA: /data/postgres
+      PGDATA: /authdb/data/postgres
       POSTGRES_DB: taccaseapi
     volumes:
       - authdb_data:/var/docker/taccaseapi
@@ -19,9 +19,9 @@ services:
 #    restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d postgres" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      interval: 10s
+      timeout: 3s
+      retries: 3
     profiles:
       - production
 
@@ -31,7 +31,7 @@ services:
     environment:
       POSTGRES_USER: tacapiuser
       POSTGRES_PASSWORD: tacapipass
-      PGDATA: /data/postgres
+      PGDATA: /authdb-dev/data/postgres
       POSTGRES_DB: taccaseapi
     volumes:
       - /dev/null:/var/docker/data/taccaseapi_dev
@@ -43,9 +43,9 @@ services:
 #    restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d postgres" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      interval: 10s
+      timeout: 3s
+      retries: 3
     profiles:
       - development
 
