@@ -66,8 +66,9 @@ public class AuthServerUtils {
 
         StringBuilder result = new StringBuilder("\nRegistered Clients (sorted by client secret expiration date):\n");
         for (RegisteredClient client : sortedClients) {
-            result.append(String.format("Client ID: %s, Client Name: %s, Expires At: %s\n",
+            result.append(String.format("Client ID: %s, Client Secret %s, Client Name: %s, Expires At: %s\n",
                     client.getClientId(),
+                    client.getClientSecret(),
                     client.getClientName(),
                     client.getClientSecretExpiresAt() != null ? client.getClientSecretExpiresAt().toString() : "Never"));
         }

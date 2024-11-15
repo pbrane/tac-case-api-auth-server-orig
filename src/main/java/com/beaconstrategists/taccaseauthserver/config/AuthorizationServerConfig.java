@@ -6,9 +6,13 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class AuthorizationServerConfig {
@@ -26,6 +30,7 @@ public class AuthorizationServerConfig {
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
+                .tokenEndpoint("/oauth2/token")
                 .issuer(issuerUri)
                 .build();
     }
@@ -35,4 +40,13 @@ public class AuthorizationServerConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+        http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/oauth2/token", "/.well-known/jwks.json").permitAll()
+                        .anyRequest().authenticated())
+                .csrf(AbstractHttpConfigurer::disable);
+        return http.build();
+    }
 }

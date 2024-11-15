@@ -1,16 +1,9 @@
-logging:
-  level:
-    org:
-      springdoc:
-        api:
-          OpenApiResource: info
-    web: info
 spring:
   application:
     name: tac-case-auth-server
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/taccaseapi}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://authdb:5432/taccaseauth}
     username: ${SPRING_DATASOURCE_USERNAME:tacapiuser}
     password: ${SPRING_DATASOURCE_PASSWORD:tacapipass}
   shell:
@@ -32,3 +25,20 @@ spring:
 #          token-introspection-uri: /oauth2/introspect
 #          token-revocation-uri: /oauth2/revoke
 #          token-uri: /oauth2/token
+
+logging:
+  level:
+    root: warn
+    org.jline: debug
+    org.springframework.shell: info
+    com.beaconstrategists: debug
+    org.springframework.security: debug
+    org.springframework.security.oauth2.server.authorization: DEBUG
+
+#logging:
+#  level:
+#    org:
+#      springdoc:
+#        api:
+#          OpenApiResource: info
+#      web: info

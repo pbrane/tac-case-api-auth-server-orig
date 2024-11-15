@@ -14,13 +14,13 @@ import javax.sql.DataSource;
 @Configuration
 public class RegisteredClientRepositoryConfig {
 
-    @Value("${CLIENT_ID:client-app}")
+    @Value("${CLIENT_ID:client-id}")
     private String clientId;
 
-    @Value("${CLIENT_SECRET:secret}")
+    @Value("${CLIENT_SECRET:client-secret}")
     private String clientSecret;
 
-    @Value("${CLIENT_NAME:client-app}")
+    @Value("${CLIENT_NAME:client-name}")
     private String clientName;
 
     private final PasswordEncoder passwordEncoder;
