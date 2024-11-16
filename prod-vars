@@ -1,0 +1,11 @@
+POSTGRES_USER=tacauthuser
+POSTGRES_PASSWORD=tacauthpass
+CLIENT_ID=client-id
+CLIENT_SECRET=client-secret
+CLIENT_NAME=client-name
+SERVER_PORT=8080
+AUTH_SERVER_ISSUER=http://localhost:8080
+SPRING_DATASOURCE_URL=jdbc:postgresql://authdb:5432/taccaseauth
+SPRING_DATASOURCE_USERNAME=tacauthuser
+SPRING_DATASOURCE_PASSWORD=tacauthpass
+SPRING_JPA_HIBERNATE_DDL_AUTO=update

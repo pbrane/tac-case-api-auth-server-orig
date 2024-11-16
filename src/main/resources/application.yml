@@ -1,30 +1,39 @@
+#logging:
+#  level:
+#    org:
+#      springdoc:
+#        api:
+#          OpenApiResource: info
+#    web: info
 spring:
   application:
     name: tac-case-auth-server
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://authdb:5432/taccaseauth}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/taccaseapi}
     username: ${SPRING_DATASOURCE_USERNAME:tacapiuser}
     password: ${SPRING_DATASOURCE_PASSWORD:tacapipass}
   shell:
     interactive:
       enabled: true
-
-#  security:
-#    oauth2:
-#      authorizationserver:
-#        endpoint:
-#          authorization-uri: /oauth2/authorize
-#          device-authorization-uri: /oauth2/device_authorization
-#          device-verification-uri: /oauth2/device_verification
-#          jwk-set-uri: /oauth2/jwks
-#          oidc:
-#            client-registration-uri: /connect/register
-#            logout-uri: /connect/logout
-#            user-info-uri: /userinfo
-#          token-introspection-uri: /oauth2/introspect
-#          token-revocation-uri: /oauth2/revoke
-#          token-uri: /oauth2/token
+  security:
+    oauth2:
+      authorizationserver:
+        endpoint:
+          token-uri:
+        client:
+          tac-case-api-client:
+            registration:
+              client-id: client-id
+              client-secret: client-secret
+              client-name: client-name
+              client-authentication-methods:
+                - "client_secret_basic"
+              authorization-grant-types:
+                - "client-credentials"
+              scopes:
+                - "read.cases"
+                - "write.cases"
 
 logging:
   level:
@@ -33,12 +42,4 @@ logging:
     org.springframework.shell: info
     com.beaconstrategists: debug
     org.springframework.security: debug
-    org.springframework.security.oauth2.server.authorization: DEBUG
-
-#logging:
-#  level:
-#    org:
-#      springdoc:
-#        api:
-#          OpenApiResource: info
-#      web: info
+#    org.springframework.security.oauth2.server.authorization: debug DO NOT SET THIS!

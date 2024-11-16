@@ -17,7 +17,7 @@ public class RegisteredClientRepositoryConfig {
     @Value("${CLIENT_ID:client-id}")
     private String clientId;
 
-    @Value("${CLIENT_SECRET:client-secret}")
+    @Value("${CLIENT_SECRET:{noop}client-secret}")
     private String clientSecret;
 
     @Value("${CLIENT_NAME:client-name}")

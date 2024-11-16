@@ -42,11 +42,15 @@ public class AuthorizationServerConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/oauth2/token", "/.well-known/jwks.json").permitAll()
-                        .anyRequest().authenticated())
-                .csrf(AbstractHttpConfigurer::disable);
+//        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+
+        http.csrf(AbstractHttpConfigurer::disable);
+//        http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
+//                        .requestMatchers("/oauth2/token", "/.well-known/jwks.json").permitAll())
+////                        .anyRequest().authenticated())
+//                .csrf(AbstractHttpConfigurer::disable);
+
+//        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         return http.build();
     }
 }

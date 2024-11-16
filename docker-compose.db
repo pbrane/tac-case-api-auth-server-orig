@@ -5,12 +5,12 @@ services:
     container_name: postgres-prod
     image: postgres:17
     environment:
-      POSTGRES_USER: tacapiuser
-      POSTGRES_PASSWORD: tacapipass
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PGDATA: /authdb/data/postgres
-      POSTGRES_DB: taccaseapi
+      POSTGRES_DB: taccaseauth
     volumes:
-      - authdb_data:/var/docker/taccaseapi
+      - authdb_data:/var/docker/taccaseauth
       - ./db_init:/docker-entrypoint-initdb.d
     ports:
       - "6432:5432"
@@ -29,12 +29,12 @@ services:
     container_name: postgres-dev
     image: postgres:17
     environment:
-      POSTGRES_USER: tacapiuser
-      POSTGRES_PASSWORD: tacapipass
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PGDATA: /authdb-dev/data/postgres
-      POSTGRES_DB: taccaseapi
+      POSTGRES_DB: taccaseauth
     volumes:
-      - /dev/null:/var/docker/data/taccaseapi_dev
+      - /dev/null:/var/docker/data/taccaseauth_dev
       - ./db_init:/docker-entrypoint-initdb.d
     ports:
       - "6433:5432"  # Different port for dev to avoid conflicts
@@ -48,7 +48,6 @@ services:
       retries: 3
     profiles:
       - development
-
 
 networks:
   backend:
