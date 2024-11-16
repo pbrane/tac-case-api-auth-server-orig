@@ -97,6 +97,9 @@
 	<profiles>
 		<profile>
 			<id>container-build</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<build>
 				<plugins>
 					<plugin>
